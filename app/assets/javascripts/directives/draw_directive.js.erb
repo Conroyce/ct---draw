@@ -2,6 +2,21 @@ app.directive("drawDirective", [function() {
   return {
     templateUrl: "<%= asset_path('templates/directives/draw_template.html') %>",
     link: function(scope, element, attr) {
+      
+      var dispatcher = new WebSocketRails('localhost:3000/websocket');
+      var success = function(response) {
+        console.log("You are awesome because: "+response.message);
+      }
+
+      var failure = function(response) {
+        console.log("You are not very awesome because: "+response.message);
+      }
+
+      var message = { awesomeness: 4 }
+      
+      dispatcher.trigger('chat.create', message, success, failure); 
+
+
       console.log("drawdirective is connected");
       var context = document.getElementById('canvas').getContext('2d');
       var clickX = new Array();

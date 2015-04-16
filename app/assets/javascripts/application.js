@@ -22,3 +22,5 @@
 //= require_tree ./services
 //= require_tree ./directives
 //= require_tree ./templates
+//= require websocket_rails/main
+

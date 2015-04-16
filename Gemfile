@@ -1,5 +1,9 @@
 source 'https://rubygems.org'
 
+gem 'pry-byebug'
+
+gem 'websocket-rails'
+
 gem 'twitter-bootstrap-rails'
 
 gem 'angularjs-rails'
