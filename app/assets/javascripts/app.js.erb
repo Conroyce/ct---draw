@@ -2,7 +2,8 @@ var app = angular.module('drawing',['ngRoute'])
   .config(["$routeProvider", function($routeProvider) {
     $routeProvider
       .when("/", {
-        templateUrl: "<%= asset_path('templates/draw.html') %>"
+        templateUrl: "<%= asset_path('templates/views/draw.html') %>",
+        controller: "DrawCtrl"
       })
       .otherwise({ redirect_to: "/" });
   }]);
