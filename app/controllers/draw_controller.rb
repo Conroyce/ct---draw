@@ -11,4 +11,10 @@ class DrawController < WebsocketRails::BaseController
     controller_store[:drag].push(message[:drag])
     trigger_success [controller_store[:x],controller_store[:y],controller_store[:drag]]
   end  
+
+  def clear
+    controller_store[:x] = []
+    controller_store[:y] = []
+    controller_store[:drag] = []
+  end  
 end

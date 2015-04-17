@@ -15,6 +15,8 @@ WebsocketRails::EventMap.describe do
   #useing a Hash to specify the target
   subscribe :startDraw, :to => DrawController, :with_method => :create
 
+  subscribe :clearDraw, :to => DrawController, :with_method => :clear
+
   #using the same syntax as routes.rb
   subscribe :update, 'draw#update'   
    
