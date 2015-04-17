@@ -1,4 +1,4 @@
-app.directive("drawDirective", [function() {
+app.directive("drawDirective", ["$interval", function($interval) {
   return {
     templateUrl: "<%= asset_path('templates/directives/draw_template.html') %>",
     link: function(scope, element, attr) {
@@ -9,14 +9,20 @@ app.directive("drawDirective", [function() {
       var clickDrag = new Array();
       var paint,
           data;
+
+      var success = function(response) {
+        console.log("response: ",response);
+        clickX = response[0][0];
+        clickY = response[1][0];
+        clickDrag = response[2][0];
+      };
       
       dispatcher.trigger('clearDraw')
 
-      var success = function(response) {
-        clickX = response[0];
-        clickY = response[1];
-        clickDrag = response[2];
-      };
+      dispatcher.bind('createDraw', function(data) {
+        console.log('inside createDraw');
+        success(data);
+      });
 
       var failure = function(response) {
         console.log(response);
@@ -32,8 +38,8 @@ app.directive("drawDirective", [function() {
       };
 
       var redraw = function() {
+        console.log("x: ",clickX,"y: ",clickY,"drag: ",clickDrag)
         context.clearRect(0, 0, context.canvas.width, context.canvas.height); // Clears the canvas
-        console.log("x: ", clickX,"y: ", clickY, "drag: ", clickDrag);
         context.strokeStyle = "#df4b26";
         context.lineJoin = "round";
         context.lineWidth = 5;
@@ -50,6 +56,11 @@ app.directive("drawDirective", [function() {
            context.stroke();
         }
       }
+
+      $interval(function() {
+        dispatcher.trigger('showDraw',paint,success);  
+        redraw();     
+      },1000);
 
       element.bind("mousedown", function(e) {
         var mouseX = e.pageX - this.offsetLeft;
