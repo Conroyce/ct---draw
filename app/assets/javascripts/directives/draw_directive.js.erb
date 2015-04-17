@@ -6,19 +6,28 @@ app.directive("drawDirective", [function() {
       var dispatcher = new WebSocketRails('localhost:3000/websocket');
       var message = { awesomeness: 4 }
       
-      dispatcher.bind('returnDraw', function(data) {
-        console.log("start draw: ", data.message);
-      });
+      var success = function(response) {
+        console.log(response);
+      };
 
-      dispatcher.trigger('startDraw', message); 
+      var failure = function(response) {
+        console.log(response);
+      };
 
       var context = document.getElementById('canvas').getContext('2d');
       var clickX = new Array();
       var clickY = new Array();
       var clickDrag = new Array();
-      var paint;
+      var paint,
+          data;
 
       var addClick = function(x, y, dragging) {
+        if (!dragging) {
+          data = { x:x, y:y };
+        } else {
+          data = { x:x, y:y, drag:dragging};
+        }
+        dispatcher.trigger('startDraw', data, success, failure);
         clickX.push(x);
         clickY.push(y);
         clickDrag.push(dragging);
@@ -26,7 +35,7 @@ app.directive("drawDirective", [function() {
 
       var redraw = function() {
         context.clearRect(0, 0, context.canvas.width, context.canvas.height); // Clears the canvas
-        
+        console.log("x: ", clickX,"y: ", clickY, "drag: ", clickDrag);
         context.strokeStyle = "#df4b26";
         context.lineJoin = "round";
         context.lineWidth = 5;
