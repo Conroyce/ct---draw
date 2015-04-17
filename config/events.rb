@@ -11,11 +11,11 @@ WebsocketRails::EventMap.describe do
   #     subscribe :new, :to => ProductController, :with_method => :new_product
   #   end
   # The above will handle an event triggered on the client like `product.new`.
-  namespace :chat do
-    #useing a Hash to specify the target
-    subscribe :create, :to => ChatController, :with_method => :create
+ 
+  #useing a Hash to specify the target
+  subscribe :startDraw, :to => DrawController, :with_method => :create
 
-    #using the same syntax as routes.rb
-    subscribe :update, 'chat#update'   
-  end  
+  #using the same syntax as routes.rb
+  subscribe :update, 'draw#update'   
+   
 end
