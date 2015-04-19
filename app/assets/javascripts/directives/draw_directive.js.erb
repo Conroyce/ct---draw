@@ -31,7 +31,8 @@ app.directive("drawDirective", ["$interval", function($interval) {
 
       dispatcher.bind('setColor', function(data) {
         console.log("setColor: ", data)
-        color = data;
+        var ans = data.shift();
+        success(data);
       });   
 
       dispatcher.bind('createDraw', function(data) {
@@ -56,6 +57,7 @@ app.directive("drawDirective", ["$interval", function($interval) {
         console.log("color: ", color, "x: ",clickX,"y: ",clickY,"drag: ",clickDrag)
         context.clearRect(0, 0, context.canvas.width, context.canvas.height); // Clears the canvas 
         context.lineJoin = "round";
+        context.lineCap = "round";
         context.lineWidth = 5;
             
         for(var i=0; i < clickX.length; i++) {
@@ -70,7 +72,7 @@ app.directive("drawDirective", ["$interval", function($interval) {
            context.closePath();
            context.stroke();
         }
-      }
+      };
 
       scope.clearDrawing = function() {
         dispatcher.trigger('clearDraw');
