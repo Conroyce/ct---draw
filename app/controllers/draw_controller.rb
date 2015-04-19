@@ -35,7 +35,7 @@ class DrawController < WebsocketRails::BaseController
     controller_store[:drag] << message[:drag]
     controller_store[:color] << controller_store[:colors][connection_store[:id]]
 
-    broadcast_message :Draw, [
+    send_message :Draw, [
       controller_store.collect_all(:x),
       controller_store.collect_all(:y),
       controller_store.collect_all(:drag),
@@ -44,11 +44,11 @@ class DrawController < WebsocketRails::BaseController
   end  
 
   def show
-    broadcast_message :Draw, [
+    send_message :Draw, [
       controller_store.collect_all(:x),
       controller_store.collect_all(:y),
       controller_store.collect_all(:drag),
-      contorller_store.collect_all(:color)
+      controller_store[:color]
     ]
   end  
 
@@ -58,7 +58,7 @@ class DrawController < WebsocketRails::BaseController
     controller_store[:drag] = []
     controller_store[:color] = []
 
-    broadcast_message :Draw, [
+    send_message :Draw, [
       controller_store.collect_all(:x),
       controller_store.collect_all(:y),
       controller_store.collect_all(:drag),

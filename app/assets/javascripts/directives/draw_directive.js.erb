@@ -2,18 +2,23 @@ app.directive("drawDirective", ["$interval", function($interval) {
   return {
     templateUrl: "<%= asset_path('templates/directives/draw_template.html') %>",
     link: function(scope, element, attr) {
-      var dispatcher = new WebSocketRails('hidden-reef-5800.herokuapp.com/websocket');
+      var dispatcher = new WebSocketRails('localhost:3000/websocket');
       var canvas = document.getElementById('canvas');
       var context = canvas.getContext('2d');
       var clickX = [];
       var clickY = [];
       var clickDrag = [];
       var color = [];
+      var start = 0;
       var paint,
           data;
 
       var success = function(response) {
         console.log("response: ",response);
+        if(clickX.length) {
+          start = clickX.length - 1;
+        }
+
         clickX = response[0][0];
         clickY = response[1][0];
         clickDrag = response[2][0];
