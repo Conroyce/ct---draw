@@ -20,20 +20,6 @@ app.directive("drawDirective", ["$interval", function($interval) {
         color = response[3];
       };
 
-      dispatcher.trigger('initDraw',paint);
-
-
-      dispatcher.bind('setColor', function(data) {
-        console.log("setColor: ", data)
-        var ans = data.shift();
-        success(data);
-      });   
-
-      dispatcher.bind('createDraw', function(data) {
-        console.log('inside createDraw');
-        success(data);
-      });
-
       var failure = function(response) {
         console.log("failure: ", response);
       };
@@ -44,7 +30,7 @@ app.directive("drawDirective", ["$interval", function($interval) {
         } else {
           data = { x:x, y:y, drag:dragging};
         }
-        dispatcher.trigger('startDraw', data);
+        dispatcher.trigger('Draw', data);
       };
 
       var redraw = function() {
@@ -72,10 +58,29 @@ app.directive("drawDirective", ["$interval", function($interval) {
         dispatcher.trigger('clearDraw');
       };  
 
+
+
+
+      dispatcher.trigger('initDraw',paint);
+
+      dispatcher.bind('setColor', function(data) {
+        console.log("setColor: ", data)
+        var ans = data.shift();
+        success(data);
+      });   
+
+      dispatcher.bind('Draw', function(data) {
+        console.log('inside Draw');
+        success(data);
+      });
+
       $interval(function() {
         dispatcher.trigger('showDraw',paint,success);  
         redraw();     
       }, 500);
+
+
+      // EVENT LISTENERS
 
       canvas.addEventListener("mousedown", function(e) {
         var mouseX = e.pageX - this.offsetLeft;
