@@ -3,12 +3,13 @@ app.directive("drawDirective", ["$interval", function($interval) {
     templateUrl: "<%= asset_path('templates/directives/draw_template.html') %>",
     link: function(scope, element, attr) {
       var dispatcher = new WebSocketRails('localhost:3000/websocket');
-      var context = document.getElementById('canvas').getContext('2d');
+      var canvas = document.getElementById('canvas');
+      var context = canvas.getContext('2d');
       var clickX = [];
       var clickY = [];
       var clickDrag = [];
+      var color = [];
       var paint,
-          color,
           data;
 
       var success = function(response) {
@@ -16,6 +17,7 @@ app.directive("drawDirective", ["$interval", function($interval) {
         clickX = response[0][0];
         clickY = response[1][0];
         clickDrag = response[2][0];
+        color = response[3];
       };
 
       var setColor = function(c) {
@@ -23,6 +25,7 @@ app.directive("drawDirective", ["$interval", function($interval) {
         color = "#008000";
       }
 
+      dispatcher.trigger('initDraw',paint);
       dispatcher.trigger('showDraw',paint,success);
       dispatcher.trigger('getColor', paint, setColor, failure);
 
@@ -51,12 +54,12 @@ app.directive("drawDirective", ["$interval", function($interval) {
 
       var redraw = function() {
         console.log("color: ", color, "x: ",clickX,"y: ",clickY,"drag: ",clickDrag)
-        context.clearRect(0, 0, context.canvas.width, context.canvas.height); // Clears the canvas
-        context.strokeStyle = color;
+        context.clearRect(0, 0, context.canvas.width, context.canvas.height); // Clears the canvas 
         context.lineJoin = "round";
         context.lineWidth = 5;
             
-        for(var i=0; i < clickX.length; i++) {    
+        for(var i=0; i < clickX.length; i++) {
+          context.strokeStyle = color[i];    
           context.beginPath();
           if(clickDrag[i] && i){
             context.moveTo(clickX[i-1], clickY[i-1]);
@@ -78,7 +81,7 @@ app.directive("drawDirective", ["$interval", function($interval) {
       //   redraw();     
       // }, 1000);
 
-      element.bind("mousedown", function(e) {
+      canvas.addEventListener("mousedown", function(e) {
         var mouseX = e.pageX - this.offsetLeft;
         var mouseY = e.pageY - this.offsetTop;
         
@@ -87,18 +90,18 @@ app.directive("drawDirective", ["$interval", function($interval) {
         redraw();
       });
 
-      element.bind("mousemove", function(e) {
+      canvas.addEventListener("mousemove", function(e) {
         if(paint) {
           addClick(e.pageX - this.offsetLeft, e.pageY - this.offsetTop, true);
           redraw();
         }
       });
 
-      element.bind("mouseup", function() {
+      canvas.addEventListener("mouseup", function() {
         paint = false;
       });
 
-      element.bind("mouseleave", function() {
+      canvas.addEventListener("mouseleave", function() {
         paint = false;
       });
     }
