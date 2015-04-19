@@ -54,26 +54,22 @@ app.directive("drawDirective", ["$interval", function($interval) {
         }
       };
 
+      // deletes canvas websocket data
       scope.clearDrawing = function() {
         dispatcher.trigger('clearDraw');
       };  
 
 
+      // initializes data with new connection
+      dispatcher.trigger('initDraw',paint);  
 
-
-      dispatcher.trigger('initDraw',paint);
-
-      dispatcher.bind('setColor', function(data) {
-        console.log("setColor: ", data)
-        var ans = data.shift();
-        success(data);
-      });   
-
+      // creates new data point each time mouse clicks and drags
       dispatcher.bind('Draw', function(data) {
         console.log('inside Draw');
         success(data);
       });
 
+      // updates other connections in real time
       $interval(function() {
         dispatcher.trigger('showDraw',paint,success);  
         redraw();     

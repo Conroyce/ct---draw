@@ -21,8 +21,7 @@ class DrawController < WebsocketRails::BaseController
     if !connection_store[:id]  #private storage, check if its a new connection
       controller_store[:id] += 1
       connection_store[:id] = controller_store[:id]
-      send_message :setColor, [
-        controller_store[:colors][connection_store[:id]],
+      send_message :Draw, [
         controller_store.collect_all(:x),
         controller_store.collect_all(:y),
         controller_store.collect_all(:drag),
@@ -31,10 +30,10 @@ class DrawController < WebsocketRails::BaseController
   end  
 
   def create
-    controller_store[:x].push(message[:x])
-    controller_store[:y].push(message[:y])
-    controller_store[:drag].push(message[:drag])
-    controller_store[:color].push(controller_store[:colors][connection_store[:id]])
+    controller_store[:x] << message[:x]
+    controller_store[:y] << message[:y]
+    controller_store[:drag] << message[:drag]
+    controller_store[:color] << controller_store[:colors][connection_store[:id]]
 
     broadcast_message :Draw, [
       controller_store.collect_all(:x),
@@ -57,5 +56,13 @@ class DrawController < WebsocketRails::BaseController
     controller_store[:x] = []
     controller_store[:y] = []
     controller_store[:drag] = []
+    controller_store[:color] = []
+
+    broadcast_message :Draw, [
+      controller_store.collect_all(:x),
+      controller_store.collect_all(:y),
+      controller_store.collect_all(:drag),
+      controller_store[:color]
+    ]
   end  
 end
