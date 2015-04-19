@@ -2,6 +2,8 @@ source 'https://rubygems.org'
 
 gem 'pry-byebug'
 
+gem "skylight"
+
 gem 'websocket-rails'
 
 gem 'twitter-bootstrap-rails'
