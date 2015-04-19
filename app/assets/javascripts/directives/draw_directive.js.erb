@@ -20,14 +20,7 @@ app.directive("drawDirective", ["$interval", function($interval) {
         color = response[3];
       };
 
-      var setColor = function(c) {
-        console.log('inside setcolor: ',c);
-        color = "#008000";
-      }
-
       dispatcher.trigger('initDraw',paint);
-      dispatcher.trigger('showDraw',paint,success);
-      dispatcher.trigger('getColor', paint, setColor, failure);
 
       dispatcher.bind('setColor', function(data) {
         console.log("setColor: ", data)
@@ -50,7 +43,7 @@ app.directive("drawDirective", ["$interval", function($interval) {
         } else {
           data = { x:x, y:y, drag:dragging};
         }
-        dispatcher.trigger('startDraw', data, success, failure);
+        dispatcher.trigger('startDraw', data);
       };
 
       var redraw = function() {
