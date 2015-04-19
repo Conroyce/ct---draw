@@ -22,6 +22,7 @@ app.directive("drawDirective", ["$interval", function($interval) {
 
       dispatcher.trigger('initDraw',paint);
 
+
       dispatcher.bind('setColor', function(data) {
         console.log("setColor: ", data)
         var ans = data.shift();
@@ -71,10 +72,10 @@ app.directive("drawDirective", ["$interval", function($interval) {
         dispatcher.trigger('clearDraw');
       };  
 
-      // $interval(function() {
-      //   dispatcher.trigger('showDraw',paint,success);  
-      //   redraw();     
-      // }, 1000);
+      $interval(function() {
+        dispatcher.trigger('showDraw',paint,success);  
+        redraw();     
+      }, 500);
 
       canvas.addEventListener("mousedown", function(e) {
         var mouseX = e.pageX - this.offsetLeft;

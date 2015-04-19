@@ -42,7 +42,16 @@ class DrawController < WebsocketRails::BaseController
       controller_store.collect_all(:drag),
       controller_store[:color]
     ]
-  end    
+  end  
+
+  def show
+    broadcast_message :createDraw, [
+      controller_store.collect_all(:x),
+      controller_store.collect_all(:y),
+      controller_store.collect_all(:drag),
+      contorller_store.collect_all(:color)
+    ]
+  end  
 
   def clear
     controller_store[:x] = []
