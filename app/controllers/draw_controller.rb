@@ -19,7 +19,9 @@ class DrawController < WebsocketRails::BaseController
 
   def startConnect
     controller_store[:id] += 1
+    controller_store[:id] = 0 if controller_store[:id] == 8
     connection_store[:id] = controller_store[:id]
+
 
     send_message :curColor, controller_store[:colors][connection_store[:id]]
 

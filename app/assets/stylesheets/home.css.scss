@@ -2,11 +2,15 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
+body {
+  color: #666;
+}
+
 #canvas {
   display: block;
   border:2px solid #ddd;
-  border-radius:4px;
-  margin: 20px auto;
+  border-radius:5px;
+  margin: 30px auto;
 }
 
 .navbar {
@@ -24,5 +28,5 @@
 }
 
 .content {
-  margin-top:90px;
+  margin-top:80px;
 }
