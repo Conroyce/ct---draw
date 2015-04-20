@@ -1,15 +1,17 @@
-<div class="container">
-  <div class="row">
-    <canvas id="canvas" width="600" height="250"></canvas>
-  </div>
-  <div class="row">
-    <div class="col-xs-4"></div>
-    <div class="col-xs-2">
-      <p>My Color: </p><span ng-style="myColor"></span>
+<div ng-style="back" class="edge">
+  <div class="container" ng-style="main">
+    <div class="row content">
+      <canvas id="canvas" width="600" height="300"></canvas>
     </div>
-    <div class="col-xs-2">
-      <input type="button" value="Clear" ng-click="clearDrawing()" class="form-control">
+    <div class="row">
+      <div class="col-xs-4"></div>
+      <div class="col-xs-2">
+        <p ng-show="myColor">My Color: </p><span ng-style="myColor"></span>
+      </div>
+      <div class="col-xs-2">
+        <input type="button" value="Clear" ng-click="clearDrawing()" class="form-control" ng-style="bord">
+      </div>
     </div>
-  </div>
 
+  </div>  
 </div>  

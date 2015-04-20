@@ -76,13 +76,25 @@ app.directive("drawDirective", ["$interval", function($interval) {
 
       dispatcher.bind('curColor', function(data) {
         console.log('inside curcolor', data);
-        scope.myColor = {
-          'display': 'inline-block',
-          'background-color': data,
-          'width':'15px',
-          'height': '15px',
-          'border-radius': '50%'
-        }
+        if (data) {
+          scope.myColor = {
+            'display': 'inline-block',
+            'background-color': data,
+            'width':'15px',
+            'height': '15px',
+            'border-radius': '50%'
+          }
+          scope.bord = {
+            'border': '1px solid '+data
+          }
+          scope.back = {
+            'background-color': data
+          }
+          scope.main = {
+            'background-color': 'white',
+            'height': '100vh'
+          }
+        }  
       });
 
       // updates other connections in real time
