@@ -21,6 +21,8 @@ class DrawController < WebsocketRails::BaseController
     controller_store[:id] += 1
     connection_store[:id] = controller_store[:id]
 
+    send_message :curColor, controller_store[:colors][connection_store[:id]]
+
     send_message :Draw, [
       controller_store.collect_all(:x),
       controller_store.collect_all(:y),
