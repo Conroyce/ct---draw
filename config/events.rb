@@ -13,7 +13,7 @@ WebsocketRails::EventMap.describe do
   # The above will handle an event triggered on the client like `product.new`.
  
   #useing a Hash to specify the target
-  subscribe :initDraw, :to => DrawController, :with_method => :startConnect
+  subscribe :initDraw, :to => DrawController, :with_method => :start_connect
 
   subscribe :Draw, :to => DrawController, :with_method => :create
 

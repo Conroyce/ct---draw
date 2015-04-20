@@ -1,6 +1,7 @@
 class DrawController < WebsocketRails::BaseController
+  # this method is run the first time its subscribed to an event
   def initialize_session
-    controller_store[:x] = [] #public storage
+    controller_store[:x] = [] 
     controller_store[:y] = []
     controller_store[:drag] = []
     controller_store[:color] = []
@@ -17,13 +18,17 @@ class DrawController < WebsocketRails::BaseController
     ]
   end   
 
-  def startConnect
+  # called when a new websocket connection is made
+  def start_connect
+    # increment id to use as counter for each connections color
     controller_store[:id] += 1
     controller_store[:id] = 0 if controller_store[:id] == 8
     connection_store[:id] = controller_store[:id]
 
+    # send the connections color
     send_message :curColor, controller_store[:colors][connection_store[:id]]
 
+    # sends array data used to display drawing
     send_message :Draw, [
       controller_store.collect_all(:x),
       controller_store.collect_all(:y),
