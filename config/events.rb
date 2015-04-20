@@ -19,9 +19,6 @@ WebsocketRails::EventMap.describe do
 
   subscribe :clearDraw, :to => DrawController, :with_method => :clear
 
-  subscribe :showDraw, :to => DrawController, :with_method => :show
-
-  #using the same syntax as routes.rb
-  subscribe :update, 'draw#update'   
+  subscribe :showDraw, :to => DrawController, :with_method => :show   
    
 end

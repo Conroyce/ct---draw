@@ -21,11 +21,13 @@ class DrawController < WebsocketRails::BaseController
   # called when a new websocket connection is made
   def start_connect
     # increment id to use as counter for each connections color
+    if controller_store[:id] == 7
+      controller_store[:id] = 0
+    end  
     controller_store[:id] += 1
-    controller_store[:id] = 0 if controller_store[:id] == 8
     connection_store[:id] = controller_store[:id]
 
-    # send the connections color
+    # send the connection's color
     send_message :curColor, controller_store[:colors][connection_store[:id]]
 
     # sends array data used to display drawing

@@ -2,23 +2,12 @@ app.directive("drawDirective", ["$interval", function($interval) {
   return {
     templateUrl: "<%= asset_path('templates/directives/draw_template.html') %>",
     link: function(scope, element, attr) {
-      var dispatcher = new WebSocketRails('hidden-reef-5800.herokuapp.com/websocket');
+      var dispatcher = new WebSocketRails('localhost:3000/websocket');
       var canvas = document.getElementById('canvas');
       var context = canvas.getContext('2d');
-      var clickX = [];
-      var clickY = [];
-      var clickDrag = [];
-      var color = [];
-      var start = 0;
-      var paint,
-          data;
+      var clickX, clickY, clickDrag, color, paint, data;
 
       var success = function(response) {
-        console.log("response: ",response);
-        if(clickX.length) {
-          start = clickX.length - 1;
-        }
-
         clickX = response[0][0];
         clickY = response[1][0];
         clickDrag = response[2][0];
@@ -29,6 +18,7 @@ app.directive("drawDirective", ["$interval", function($interval) {
         console.log("failure: ", response);
       };
 
+      // sends data to websocket connection
       var addClick = function(x, y, dragging) {
         if (!dragging) {
           data = { x:x, y:y };
@@ -39,13 +29,14 @@ app.directive("drawDirective", ["$interval", function($interval) {
       };
 
       var redraw = function() {
-        console.log("color: ", color, "x: ",clickX,"y: ",clickY,"drag: ",clickDrag)
-        context.clearRect(0, 0, context.canvas.width, context.canvas.height); // Clears the canvas 
+        context.clearRect(0, 0, context.canvas.width, context.canvas.height);
         context.lineJoin = "round";
         context.lineCap = "round";
         context.lineWidth = 5;
             
+        // iterates through x coordinates    
         for(var i=0; i < clickX.length; i++) {
+          // set color and draw line using coordinates
           context.strokeStyle = color[i];    
           context.beginPath();
           if(clickDrag[i] && i){
@@ -66,32 +57,30 @@ app.directive("drawDirective", ["$interval", function($interval) {
 
 
       // initializes data with new connection
-      dispatcher.trigger('initDraw',paint);  
+      dispatcher.trigger('initDraw', paint);  
 
       // creates new data point each time mouse clicks and drags
       dispatcher.bind('Draw', function(data) {
-        console.log('inside Draw');
         success(data);
       });
 
+      // sets ui colors based on current connection color
       dispatcher.bind('curColor', function(data) {
-        console.log('inside curcolor', data);
-        if (data) {
-          scope.myColor = {
-            'fill': data,
-            'border': '1px solid '+data
-          }
-          scope.bord = {
-            'border': '1px solid '+data
-          }
-          scope.back = {
-            'background-color': data
-          }
-          scope.main = {
-            'background-color': 'white',
-            'height': '100vh'
-          }
-        }  
+        scope.myColor = {
+          'fill': data,
+          'border': '1px solid '+data
+        }
+        scope.bord = {
+          'border': '1px solid '+data
+        }
+        scope.back = {
+          'background-color': data
+        }
+        scope.main = {
+          'background-color': 'white',
+          'height': '100vh'
+        }
+     
       });
 
       // updates other connections in real time
