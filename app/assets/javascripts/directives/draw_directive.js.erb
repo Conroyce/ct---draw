@@ -2,7 +2,7 @@ app.directive("drawDirective", ["$interval", function($interval) {
   return {
     templateUrl: "<%= asset_path('templates/directives/draw_template.html') %>",
     link: function(scope, element, attr) {
-      var dispatcher = new WebSocketRails('localhost:3000/websocket');
+      var dispatcher = new WebSocketRails('hidden-reef-5800.herokuapp.com/websocket');
       var canvas = document.getElementById('canvas');
       var context = canvas.getContext('2d');
       var clickX = [];
@@ -78,11 +78,8 @@ app.directive("drawDirective", ["$interval", function($interval) {
         console.log('inside curcolor', data);
         if (data) {
           scope.myColor = {
-            'display': 'inline-block',
-            'background-color': data,
-            'width':'15px',
-            'height': '15px',
-            'border-radius': '50%'
+            'fill': data,
+            'border': '1px solid '+data
           }
           scope.bord = {
             'border': '1px solid '+data

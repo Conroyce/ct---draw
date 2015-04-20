@@ -6,10 +6,13 @@
     <div class="row">
       <div class="col-xs-4"></div>
       <div class="col-xs-2">
-        <p ng-show="myColor">My Color: </p><span ng-style="myColor"></span>
+        <p class="form control btn btn-default" ng-style="myColor" ng-show="bord">My Color: 
+        <svg width="20" height="20">
+          <circle cx="10" cy="10" r="8" ng-style="myColor" />
+        </svg>
       </div>
       <div class="col-xs-2">
-        <input type="button" value="Clear" ng-click="clearDrawing()" class="form-control" ng-style="bord">
+        <input type="button" value="Clear" ng-click="clearDrawing()" class="btn btn-default form-control" ng-style="bord">
       </div>
     </div>
 
