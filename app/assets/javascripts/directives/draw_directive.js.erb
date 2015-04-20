@@ -78,11 +78,8 @@ app.directive("drawDirective", ["$interval", function($interval) {
         console.log('inside curcolor', data);
         if (data) {
           scope.myColor = {
-            'display': 'inline-block',
-            'background-color': data,
-            'width':'15px',
-            'height': '15px',
-            'border-radius': '50%'
+            'fill': data,
+            'border': '1px solid '+data
           }
           scope.bord = {
             'border': '1px solid '+data
